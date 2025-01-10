@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<body>
+<div id="root"></div>
+</body>
+<script type="text/babel">
+    const root = document.getElementById("root");
+
+    function MtoHours() {
+        const [input, setInput] = React.useState(0);
+        const [isFlipped, setIsFlipped] = React.useState(false);
+        const onChange = (event) => {
+            setInput(event.target.value);
+        }
+        const reset = () => {
+            setInput(0);
+        }
+        const flip = () => {
+            setInput(0);
+            setIsFlipped((current) => !current);
+        }
+
+        return (
+            <div>
+                <div>
+                    <label>분</label>
+                    <input
+                        type="number"
+                        value={!isFlipped ? input : input * 60}
+                        onChange={onChange}
+                        disabled={isFlipped}
+                        />
+                </div>
+                <div>
+                    <label>시간</label>
+                    <input
+                        value={isFlipped ? input : Math.round(input / 60)}
+                        type={"number"}
+                        onChange={onChange}
+                        disabled={!isFlipped}
+                        />
+                </div>
+                <button onClick={reset}>reset</button>
+                <button onClick={flip}>flip</button>
+            </div>
+        );
+    }
+
+    function App() {
+        const [selectNum, setSelectNum] = React.useState("0");
+        const onselect = (event) => {
+            setSelectNum(event.target.value);
+        };
+
+        return (
+            <div>
+                <h1>Use State 3</h1>
+                <label>
+                    <select value={selectNum} onChange={onselect}>
+                        <option value="0">분 to 시간</option>
+                        <option value="1">km to miles</option>
+                    </select>
+                </label>
+                {selectNum === "0" ? <MtoHours/> : null}
+            </div>
+        );
+    }
+
+    ReactDOM.render(<App/>, root);
+</script>
+</html>
