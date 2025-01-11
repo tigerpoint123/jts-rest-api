@@ -38,13 +38,10 @@ public class ApiQuestionController {
         );
     }
 
-    @Getter
-    @AllArgsConstructor
-    public static class QuestionUpdateReqestBody {
-        private String subject;
-        private String content;
-    }
-
+    record QuestionUpdateReqestBody (
+            String subject,
+            String content
+    ) {}
 
     @PutMapping("/{id}")
     public RsData updateQuestion(
@@ -52,7 +49,7 @@ public class ApiQuestionController {
             @RequestBody QuestionUpdateReqestBody questionUpdateReqestBody
     ) {
         Question question = questionService.findById(id);
-        questionService.update(question, questionUpdateReqestBody.getSubject(), questionUpdateReqestBody.getContent());
+        questionService.update(question, questionUpdateReqestBody.subject, questionUpdateReqestBody.content);
 
         return new RsData(
                 "200-1",
