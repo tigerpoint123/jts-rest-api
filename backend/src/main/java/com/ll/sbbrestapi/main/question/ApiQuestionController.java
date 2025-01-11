@@ -1,9 +1,12 @@
 package com.ll.sbbrestapi.main.question;
 
 import com.ll.sbbrestapi.global.rsData.RsData;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -39,14 +42,14 @@ public class ApiQuestionController {
     }
 
     record QuestionUpdateReqestBody (
-            String subject,
-            String content
+            @NotBlank @Length(min = 2) String subject,
+            @NotBlank @Length(min = 2) String content
     ) {}
 
     @PutMapping("/{id}")
     public RsData updateQuestion(
             @PathVariable Long id,
-            @RequestBody QuestionUpdateReqestBody questionUpdateReqestBody
+            @RequestBody @Valid QuestionUpdateReqestBody questionUpdateReqestBody
     ) {
         Question question = questionService.findById(id);
         questionService.update(question, questionUpdateReqestBody.subject, questionUpdateReqestBody.content);
