@@ -1,5 +1,6 @@
 package com.ll.sbbrestapi.main.question;
 
+import com.ll.sbbrestapi.global.rsData.RsData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -26,15 +27,15 @@ public class ApiQuestionController {
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Object> deleteQuestion(Long id) {
+    public RsData deleteQuestion(Long id) {
         Question question = questionService.findById(id);
 
         questionService.delete(question);
 
-        Map<String, Object> rsData = new HashMap<>();
-        rsData.put("resultCode", "200-1");
-        rsData.put("message", "%d번 글 삭제 완료되었습니다".formatted(id));
-        return rsData;
+        return new RsData(
+                "200-1",
+                "%d번 글 삭제 완료되었습니다".formatted(id)
+        );
     }
 
     @Getter
@@ -46,17 +47,16 @@ public class ApiQuestionController {
 
 
     @PutMapping("/{id}")
-    public Map<String, Object> updateQuestion(
+    public RsData updateQuestion(
             @PathVariable Long id,
             @RequestBody QuestionUpdateReqestBody questionUpdateReqestBody
     ) {
         Question question = questionService.findById(id);
-
         questionService.update(question, questionUpdateReqestBody.getSubject(), questionUpdateReqestBody.getContent());
 
-        Map<String, Object> rsData = new HashMap<>();
-        rsData.put("resultCode", "200-1");
-        rsData.put("message", "%d번 글 수정 완료되었습니다".formatted(id));
-        return rsData;
+        return new RsData(
+                "200-1",
+                "%d번 글 수정 완료되었습니다".formatted(id)
+        );
     }
 }
